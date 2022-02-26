@@ -320,8 +320,25 @@
                     if (data.readyState == 4) {
                         console.log(data.response);
                         var responseResult = JSON.parse(data.responseText);
-                        document.getElementById("form_transaction").reset();
-                        alert(responseResult);
+                        if(typeof responseResult === 'object' && responseResult !== null){
+                            const keys = Object.keys(responseResult);
+                            keys.forEach((key, index) => {
+                                if(key.substr(0,4)=='err_'){
+                                    var selector=key.substr(4);
+                                    var message=responseResult[key];
+                                    setMessage(selector, message);
+                                }
+                            });
+                        }else {
+                            document.getElementById("form_transaction").reset();
+                            var phone = document.getElementById('phone').value;
+                            if (phone.substr(0, 3) != "880") {
+                                document.getElementById('phone').value = "880";
+                            }
+                            alert(responseResult);
+                        }
+
+
                     }
                     document.getElementById("formSubmitButton").disabled = false;
                 });
