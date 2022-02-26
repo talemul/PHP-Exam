@@ -68,6 +68,7 @@ class Transaction extends Controller
     public function store()
     {
         $noError = true;
+        $return_message = "";
         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data = [
@@ -117,7 +118,7 @@ class Transaction extends Controller
                 $data['err_note'] = 'Please do not enter more than 30 words. You enter ' . substr_count($data['note'], ' ') . ' words.';
                 $noError = false;
             }
-            if (substr_count($data['note'], ' ') < 1) {
+            if (strlen($data['note']) < 1) {
                 $data['err_note'] = 'Please enter anything. You enter ' . substr_count($data['note'], ' ') . ' words.' . $data['note'];
                 $noError = false;
             }
@@ -142,22 +143,23 @@ class Transaction extends Controller
                     if (is_null($timestamp) || (time() - $timestamp) > 24 * 60 * 60) {
                         if ($this->transactionModel->addData($data)) {
                             $_SESSION['form_submitted_ts'] = time();
-                            echo json_encode('Data have been added');
+                            $return_message = json_encode('Data have been added');
                         } else {
-                            echo json_encode('something went wrong');
+                            $return_message = json_encode('something went wrong');
                         }
                     } else {
-                        echo json_encode('Form submitted in last 24 hours.');
+                        $return_message = json_encode('Form submitted in last 24 hours.');
                     }
                 }
 
             } else {
                 //$this->view('transaction/add', $data);
-                echo json_encode($data);
+                $return_message = json_encode($data);
             }
         } else {
-            echo json_encode('something went wrong');
+            $return_message = json_encode('something went wrong');
         }
+        echo $return_message;
     }
 
     protected function checkText($value)
