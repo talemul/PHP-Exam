@@ -30,3 +30,6 @@ XML PHP Extension
 > 
 ### Here i mention that, if your server unable to run .htaccess file properly, then please browse URLROOT/public
 >you can also visit this link [https://phpexam.talemul.com](https://phpexam.talemul.com/)
+
+#### I did not understand about items. user should be able to add multiple items (use js based interface).
+i can add UI to get multiple items but in DB how can i store it, if there also have a condition ```items (varchar 255) *``` in same table. i can do this using another table one to many relationship between main table and items table. but i fall in confusion about this requirement, so i did not do any ```get multiple items UI``` 
